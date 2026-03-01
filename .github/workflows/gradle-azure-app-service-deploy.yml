@@ -73,7 +73,7 @@ jobs:
           app-settings-json: ${{ secrets.azure-app-settings }}
 
       - name: Deploy
-        uses: azure/webapps-deploy@v3.0.6
+        uses: azure/webapps-deploy@v3.0.7
         with:
           app-name: ${{ secrets.azure-app-name }}
           publish-profile: ${{ secrets.azure-app-profile }}

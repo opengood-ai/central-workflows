@@ -41,7 +41,7 @@ jobs:
           java-version: ${{ inputs.java-version }}
 
       - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v5.0.1
+        uses: gradle/actions/setup-gradle@v5.0.2
         with:
           validate-wrappers: ${{ inputs.run-gradle-validation }}
 
@@ -49,7 +49,7 @@ jobs:
         run: ./gradlew clean build
 
       - name: Codestyle
-        uses: musichin/ktlint-check@v4.0.1
+        uses: musichin/ktlint-check@v4.0.2
         with:
           ktlint-version: 1.2.1
 
