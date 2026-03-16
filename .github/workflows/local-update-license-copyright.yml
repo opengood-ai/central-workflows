@@ -8,6 +8,6 @@ on:
 
 jobs:
   local-update-license-copyright:
-    uses: opengood-aio/central-workflows/.github/workflows/workflow-update-license-copyright.yml@main
+    uses: opengood-ai/central-workflows/.github/workflows/workflow-update-license-copyright.yml@main
     secrets:
       workflow-token: ${{ secrets.WORKFLOW_TOKEN }}

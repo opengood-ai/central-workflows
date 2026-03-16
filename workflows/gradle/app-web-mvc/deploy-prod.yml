@@ -10,7 +10,7 @@ on:
 
 jobs:
   deploy-prod:
-    uses: opengood-aio/central-workflows/.github/workflows/gradle-azure-app-service-deploy.yml@main
+    uses: opengood-ai/central-workflows/.github/workflows/gradle-azure-app-service-deploy.yml@main
     with:
       azure-env: prod
       azure-app-name: ${{ vars.AZURE_APP_NAME_PROD }}

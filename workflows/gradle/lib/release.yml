@@ -16,7 +16,7 @@ on:
 
 jobs:
   release:
-    uses: opengood-aio/central-workflows/.github/workflows/gradle-maven-central-release.yml@main
+    uses: opengood-ai/central-workflows/.github/workflows/gradle-maven-central-release.yml@main
     with:
       git-email: ${{ vars.GIT_EMAIL }}
       git-user: ${{ vars.GIT_USER }}

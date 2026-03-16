@@ -16,4 +16,4 @@ on:
 
 jobs:
   build:
-    uses: opengood-aio/central-workflows/.github/workflows/java-kotlin-codeql-analyze.yml@main
+    uses: opengood-ai/central-workflows/.github/workflows/java-kotlin-codeql-analyze.yml@main

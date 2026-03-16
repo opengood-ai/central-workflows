@@ -15,4 +15,4 @@ on:
 
 jobs:
   build:
-    uses: opengood-aio/central-workflows/.github/workflows/python-codeql-analyze.yml@main
+    uses: opengood-ai/central-workflows/.github/workflows/python-codeql-analyze.yml@main
