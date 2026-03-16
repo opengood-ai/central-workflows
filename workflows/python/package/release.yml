@@ -15,7 +15,7 @@ on:
 
 jobs:
   release:
-    uses: opengood-aio/central-workflows/.github/workflows/python-py-pi-release.yml@main
+    uses: opengood-ai/central-workflows/.github/workflows/python-py-pi-release.yml@main
     with:
       git-email: ${{ vars.GIT_EMAIL }}
       git-user: ${{ vars.GIT_USER }}

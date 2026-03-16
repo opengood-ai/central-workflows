@@ -13,4 +13,4 @@ on:
 
 jobs:
   build:
-    uses: opengood-aio/central-workflows/.github/workflows/bash-bats-build.yml@main
+    uses: opengood-ai/central-workflows/.github/workflows/bash-bats-build.yml@main

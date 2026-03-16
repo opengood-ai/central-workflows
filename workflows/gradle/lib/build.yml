@@ -14,7 +14,7 @@ on:
 
 jobs:
   build:
-    uses: opengood-aio/central-workflows/.github/workflows/gradle-lib-build.yml@main
+    uses: opengood-ai/central-workflows/.github/workflows/gradle-lib-build.yml@main
     with:
       run-code-coverage: true
       run-gradle-validation: true

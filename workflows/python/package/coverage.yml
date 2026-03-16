@@ -10,7 +10,7 @@ on:
 
 jobs:
   coverage:
-    uses: opengood-aio/central-workflows/.github/workflows/python-code-coverage.yml@main
+    uses: opengood-ai/central-workflows/.github/workflows/python-code-coverage.yml@main
     with:
       run-code-coverage: true
     secrets:
