@@ -1,0 +1,35 @@
+name: workflow-update-actions
+
+on:
+  workflow_call:
+    inputs:
+      git-email:
+        type: string
+        description: Git user email address
+        required: true
+      git-user:
+        type: string
+        description: Git user username
+        required: true
+    secrets:
+      workflow-token:
+        description: GitHub workflow token for pushing automated commits
+        required: true
+
+jobs:
+  workflow-update-actions:
+    name: Workflow Update Actions
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6.0.2
+        with:
+          token: ${{ secrets.WORKFLOW_TOKEN }}
+
+      - name: Update Workflow Action Versions
+        uses: saadmk11/github-actions-version-updater@v0.9.0
+        with:
+          committer_email: ${{ inputs.GIT_EMAIL }}
+          committer_username: ${{ inputs.GIT_USER }}
+          token: ${{ secrets.WORKFLOW_TOKEN }}
+          ignore: '["github/codeql-action/init@v3", "github/codeql-action/autobuild@v3", "github/codeql-action/analyze@v3"]'
