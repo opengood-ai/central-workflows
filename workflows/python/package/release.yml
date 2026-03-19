@@ -14,11 +14,39 @@ on:
       - README.md
 
 jobs:
-  release:
-    uses: opengood-ai/central-workflows/.github/workflows/python-py-pi-release.yml@main
+  release-build:
+    uses: opengood-ai/central-workflows/.github/workflows/python-release-build.yml@main
     with:
       git-email: ${{ vars.GIT_EMAIL }}
       git-user: ${{ vars.GIT_USER }}
     secrets:
-      py-pi-token: ${{ secrets.PY_PI_TOKEN }}
+      workflow-token: ${{ secrets.WORKFLOW_TOKEN }}
+
+  py-pi-release:
+    name: Python PyPI Release
+    needs: [ release-build ]
+    runs-on: ubuntu-latest
+    environment:
+      name: pypi
+      url: https://pypi.org/p/${{ github.event.repository.name }}
+    permissions:
+      contents: read
+      id-token: write
+    if: ${{ contains(github.event.pull_request.labels.*.name, 'release') && github.event.pull_request.merged == true }}
+    steps:
+      - name: Download Distribution Packages
+        uses: actions/download-artifact@v8.0.1
+        with:
+          name: python-package-distributions
+          path: dist/
+
+      - name: Publish Distribution Package
+        uses: pypa/gh-action-pypi-publish@v1.13.0
+        with:
+          verbose: true
+
+  release:
+    uses: opengood-ai/central-workflows/.github/workflows/python-release.yml@main
+    needs: [ py-pi-release ]
+    secrets:
       workflow-token: ${{ secrets.WORKFLOW_TOKEN }}
