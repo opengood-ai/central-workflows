@@ -20,15 +20,42 @@ This repository serves as the single source of truth for CI/CD workflows used ac
 These are the core workflow definitions that perform the actual CI/CD work. They use the `workflow_call` trigger and accept inputs and secrets as parameters.
 
 **Key workflows:**
+
+**Build workflows:**
+- `bash-bats-build.yml` - Builds Bash projects with BATS testing framework
 - `gradle-lib-build.yml` - Builds Gradle libraries with Java setup, ktlint validation, and optional code coverage
-- `gradle-maven-central-release.yml` - Releases Gradle artifacts to Maven Central with GPG signing
+- `gradle-lib-postgres-build.yml` - Builds Gradle libraries with PostgreSQL integration
+- `gradle-app-build.yml` - Builds Gradle applications
+- `gradle-app-postgres-build.yml` - Builds Gradle applications with PostgreSQL integration
+- `gradle-cli-build.yml` - Builds Gradle CLI applications
+- `gradle-plugin-build.yml` - Builds Gradle plugins
 - `python-package-build.yml` - Builds Python packages with pytest and ruff linting
-- `python-py-pi-release.yml` - Publishes Python packages to PyPI
+
+**Release workflows:**
+- `gradle-maven-central-release.yml` - Releases Gradle artifacts to Maven Central with GPG signing
 - `gradle-plugin-release.yml` - Publishes Gradle plugins to Gradle Plugin Portal
+- `gradle-github-release.yml` - Creates GitHub releases for Gradle projects
+- `python-release-build.yml` - Builds Python package distributions for release
+- `python-release.yml` - Creates GitHub releases for Python projects with version bumping
+
+**Deployment workflows:**
 - `gradle-azure-app-service-deploy.yml` - Deploys applications to Azure App Service
-- `java-kotlin-code-coverage.yml` - Generates and uploads code coverage reports
+
+**Code quality workflows:**
+- `java-kotlin-code-coverage.yml` - Generates and uploads code coverage reports for Java/Kotlin
+- `java-kotlin-postgres-code-coverage.yml` - Generates code coverage for Java/Kotlin with PostgreSQL
+- `python-code-coverage.yml` - Generates and uploads code coverage reports for Python
+- `java-kotlin-codeql-analyze.yml` - CodeQL security analysis for Java/Kotlin
+- `python-codeql-analyze.yml` - CodeQL security analysis for Python
+
+**Utility workflows:**
 - `workflow-cancel.yml` - Cancels in-progress workflows
 - `workflow-update-license-copyright.yml` - Updates license copyright headers
+- `workflow-update-actions.yml` - Updates GitHub Actions versions in workflows
+- `workflow-clear-packages.yml` - Clears old GitHub packages
+- `gradle-dependencies-submit.yml` - Submits Gradle dependency graph to GitHub
+- `local-update-actions.yml` - Local workflow wrapper for updating GitHub Actions versions
+- `local-update-license-copyright.yml` - Local workflow wrapper for updating license copyright
 
 ### Copy-Paste Templates (`workflows/`)
 
@@ -88,44 +115,63 @@ jobs:
 ### Example: Setting Up a Python Package
 
 1. Copy workflows from `workflows/python/package/`:
-   - `build.yml` - Build and test with pytest
-   - `release.yml` - Publish to PyPI
-   - `coverage.yml` - Code coverage
+   - `build.yml` - Build and test with pytest and ruff linting
+   - `release.yml` - Build package, publish to PyPI, and create GitHub release
+   - `coverage.yml` - Code coverage reporting
    - `codeql.yml` - Security analysis
+   - `cancel.yml` - Cancel in-progress workflows
+   - `update-actions.yml` - Auto-update GitHub Actions versions
+   - `update-license-copyright.yml` - Update copyright headers
 
 2. Configure repository secrets:
    - `CODECOV_TOKEN` - Codecov integration
-   - `PYPI_API_TOKEN` - PyPI publishing token
    - `WORKFLOW_TOKEN` - GitHub token with workflow permissions
 
-## Common Workflows
+3. Configure repository variables:
+   - `GIT_EMAIL` - Git user email for automated commits
+   - `GIT_USER` - Git username for automated commits
 
-### Build Workflows
-Triggered on all branches except `main`, these run tests and validation:
-- Gradle: Runs `./gradlew clean build` with ktlint code style checks
-- Python: Runs `pytest` with ruff linting and formatting checks
-- Bash: Runs BATS test suite
+4. Set up PyPI trusted publishing:
+   - Configure PyPI trusted publisher for your repository
+   - No API token needed - uses OpenID Connect (OIDC)
 
-### Release Workflows
-Triggered when a PR is merged to `main` with the `release` label:
-- Extracts version from `gradle.properties` or `pyproject.toml`
-- Builds and publishes artifacts to Maven Central, PyPI, or Gradle Plugin Portal
-- Creates a GitHub release with the version tag
+## Common Workflow Templates
 
-### Deploy Workflows
-Triggered when a PR is merged to `main` with a `deploy {env}` label:
-- Downloads release artifacts from GitHub Packages
-- Deploys to Azure App Service for the specified environment
-- Configures app settings from repository secrets
+The following workflow templates are available in the `workflows/` directory for each project type:
 
-### Coverage Workflows
-Run code coverage analysis and upload results to Codecov:
-- Gradle: Uses JaCoCo for Java/Kotlin coverage
-- Python: Uses pytest-cov for Python coverage
-- PostgreSQL projects: Runs coverage with database integration tests
+### Standard Workflows (All Project Types)
 
-### CodeQL Workflows
-Run GitHub CodeQL security analysis on a schedule and for every push
+- **`build.yml`** - Triggered on all branches except `main`, runs tests and validation
+  - Gradle: Runs `./gradlew clean build` with ktlint code style checks
+  - Python: Runs `pytest` with ruff linting and formatting checks
+  - Bash: Runs BATS test suite
+
+- **`release.yml`** - Triggered when a PR is merged to `main` with the `release` label
+  - Gradle libraries: Publishes to Maven Central with GPG signing
+  - Gradle plugins: Publishes to Gradle Plugin Portal
+  - Python packages: Builds and publishes to PyPI with trusted publishing
+  - Creates a GitHub release with version tag
+
+- **`coverage.yml`** - Runs code coverage analysis and uploads to Codecov
+  - Gradle: Uses JaCoCo for Java/Kotlin coverage
+  - Python: Uses pytest-cov for Python coverage
+  - PostgreSQL projects: Includes database integration test coverage
+
+- **`codeql.yml`** - Runs GitHub CodeQL security analysis on schedule and push
+
+- **`cancel.yml`** - Cancels in-progress workflows when new commits are pushed
+
+- **`update-license-copyright.yml`** - Updates license copyright headers on schedule
+
+- **`dependencies-submit.yml`** - Submits dependency graph to GitHub (Gradle projects only)
+
+### Application-Specific Workflows
+
+The following templates are available for application projects (`app-postgres`, `app-web-mvc`):
+
+- **`deploy-dev.yml`** - Deploys to dev environment when PR merged to `main` with `deploy dev` label
+- **`deploy-prod.yml`** - Deploys to prod environment when PR merged to `main` with `deploy prod` label
+- **`clear-packages.yml`** - Clears old GitHub packages on schedule
 
 ## Default Configurations
 
