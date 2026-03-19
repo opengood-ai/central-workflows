@@ -1,4 +1,4 @@
-name: local-update-actions
+name: update-actions
 
 on:
   workflow_dispatch:
@@ -7,7 +7,7 @@ on:
     - cron: '0 0 * * 0'
 
 jobs:
-  local-update-actions:
+  update-actions:
     uses: opengood-ai/central-workflows/.github/workflows/workflow-update-actions.yml@main
     with:
       git-email: ${{ vars.GIT_EMAIL }}
