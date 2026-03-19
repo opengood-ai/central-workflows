@@ -1,0 +1,61 @@
+name: python-release
+
+on:
+  workflow_call:
+    inputs:
+      bump-part:
+        type: string
+        description: Part of semantic version number to bump
+        required: false
+        default: minor
+    secrets:
+      workflow-token:
+        description: GitHub workflow token for pushing automated commits
+        required: true
+
+jobs:
+  python-release:
+    name: Python Release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      id-token: write
+    if: ${{ contains(github.event.pull_request.labels.*.name, 'release') && github.event.pull_request.merged == true }}
+    steps:
+      - name: Set Release Version and Tag
+        id: set_release_and_tag
+        uses: callowayproject/bump-my-version@1.2.7
+        env:
+          BUMPVERSION_TAG: true
+        with:
+          args: ${{ inputs.bump-part }}
+          github-token: ${{ secrets.workflow-token }}
+
+      - name: Get Release Version
+        run: |
+          echo "RELEASE_VERSION=${{ steps.set_release_and_tag.outputs.previous-version }}" >> $GITHUB_ENV
+          echo "NEXT_DEV_VERSION=${{ steps.set_release_and_tag.outputs.current-version }}" >> $GITHUB_ENV
+
+      - name: Set Next Project Version
+        run: |
+          sed -i "s/^\s*version = \".*\"/version = \"$NEXT_DEV_VERSION\"/" pyproject.toml
+          git add pyproject.toml
+          git commit -m "Update next Python project version from $RELEASE_VERSION to $NEXT_DEV_VERSION"
+
+      - name: Push Next Project Version Change
+        uses: ad-m/github-push-action@v1.0.0
+        with:
+          github_token: ${{ secrets.workflow-token }}
+          branch: ${{ github.ref }}
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2.5.1
+        with:
+          tag_name: ${{ env.RELEASE_VERSION }}
+          name: ${{ env.RELEASE_VERSION }}
+          body: ${{ github.event.pull_request.body }}
+          draft: false
+          prerelease: false
+          fail_on_unmatched_files: true
+          make_latest: true
+          token: ${{ secrets.workflow-token }}
