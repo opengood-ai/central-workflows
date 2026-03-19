@@ -1,0 +1,74 @@
+name: python-release-build
+
+on:
+  workflow_call:
+    inputs:
+      git-email:
+        type: string
+        description: Git user email address
+        required: true
+      git-user:
+        type: string
+        description: Git user username
+        required: true
+      python-version:
+        type: number
+        description: Version of Python to use
+        required: false
+        default: 3.13
+    secrets:
+      workflow-token:
+        description: GitHub workflow token for pushing automated commits
+        required: true
+
+jobs:
+  python-release-build:
+    name: Python Release Build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    if: ${{ contains(github.event.pull_request.labels.*.name, 'release') && github.event.pull_request.merged == true }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6.0.2
+        with:
+          persist-credentials: false
+          token: ${{ secrets.workflow-token }}
+
+      - name: Setup Git
+        run: |
+          git config user.email ${GIT_EMAIL}
+          git config user.name ${GIT_USER}
+          git config url.https://$GITHUB_TOKEN@github.com/.insteadOf https://github.com/
+        env:
+          GIT_EMAIL: ${{ inputs.git-email }}
+          GIT_USER: ${{ inputs.git-user }}
+          GITHUB_TOKEN: ${{ secrets.workflow-token }}
+
+      - name: Setup Python
+        uses: actions/setup-python@v6.2.0
+        with:
+          python-version: ${{ inputs.python-version }}
+          cache: 'pip'
+
+      - name: Display Python Version
+        run: python -c "import sys; print(sys.version)"
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install --upgrade setuptools
+          pip install -r requirements.txt
+
+      - name: Install Build
+        run: python -m pip install build --user
+
+      - name: Build Binary Wheel and Source Tarball
+        run: python -m build
+
+      - name: Upload Distribution Packages
+        uses: actions/upload-artifact@v7.0.0
+        with:
+          name: python-package-distributions
+          path: dist/
