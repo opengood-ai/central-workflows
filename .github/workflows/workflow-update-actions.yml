@@ -24,12 +24,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6.0.2
         with:
-          token: ${{ secrets.WORKFLOW_TOKEN }}
+          token: ${{ secrets.workflow-token }}
 
       - name: Update Workflow Action Versions
         uses: saadmk11/github-actions-version-updater@v0.9.0
         with:
-          committer_email: ${{ inputs.GIT_EMAIL }}
-          committer_username: ${{ inputs.GIT_USER }}
-          token: ${{ secrets.WORKFLOW_TOKEN }}
+          committer_email: ${{ inputs.git-email }}
+          committer_username: ${{ inputs.git-user }}
+          token: ${{ secrets.workflow-token }}
           ignore: '["github/codeql-action/init@v3", "github/codeql-action/autobuild@v3", "github/codeql-action/analyze@v3"]'
