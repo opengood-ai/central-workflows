@@ -56,7 +56,7 @@ jobs:
 
       - name: Coverage
         if: ${{ inputs.run-code-coverage == true }}
-        uses: codecov/codecov-action@v5.5.2
+        uses: codecov/codecov-action@v5.5.3
         with:
           files: ./coverage.xml
           verbose: true

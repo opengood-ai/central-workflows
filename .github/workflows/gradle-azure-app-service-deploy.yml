@@ -62,7 +62,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.workflow-token }}
 
       - name: Azure Login
-        uses: azure/login@v2.3.0
+        uses: azure/login@v3.0.0
         with:
           creds: ${{ secrets.azure-app-credentials }}
 
