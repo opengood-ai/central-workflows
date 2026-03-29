@@ -91,7 +91,7 @@ jobs:
           FLYWAY_PASSWORD: ${{ secrets.postgres-build-db-svc-password }}
 
       - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v5.0.2
+        uses: gradle/actions/setup-gradle@v6.0.1
         with:
           validate-wrappers: ${{ inputs.run-gradle-validation }}
 
@@ -109,7 +109,7 @@ jobs:
 
       - name: Coverage
         if: ${{ inputs.run-code-coverage == true }}
-        uses: codecov/codecov-action@v5.5.3
+        uses: codecov/codecov-action@v6.0.0
         with:
           files: ./build/reports/jacoco/test/jacocoTestReport.xml
           verbose: true
