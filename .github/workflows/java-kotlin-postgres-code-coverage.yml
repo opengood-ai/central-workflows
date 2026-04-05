@@ -92,7 +92,7 @@ jobs:
           FLYWAY_PASSWORD: ${{ secrets.postgres-build-db-svc-password }}
 
       - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v6.0.1
+        uses: gradle/actions/setup-gradle@v6.1.0
         with:
           validate-wrappers: ${{ inputs.run-gradle-validation }}
 
