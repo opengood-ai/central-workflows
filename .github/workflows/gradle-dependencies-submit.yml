@@ -29,4 +29,4 @@ jobs:
           java-version: ${{ inputs.java-version }}
 
       - name: Gradle Dependencies Submission
-        uses: gradle/actions/dependency-submission@v6.0.1
+        uses: gradle/actions/dependency-submission@v6.1.0
