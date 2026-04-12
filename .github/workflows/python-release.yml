@@ -43,7 +43,7 @@ jobs:
           git commit -m "Update next Python project version from $RELEASE_VERSION to $NEXT_DEV_VERSION"
 
       - name: Push Next Project Version Change
-        uses: ad-m/github-push-action@v1.0.0
+        uses: ad-m/github-push-action@v1.1.0
         with:
           github_token: ${{ secrets.workflow-token }}
           branch: ${{ github.ref }}
