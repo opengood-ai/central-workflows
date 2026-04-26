@@ -50,7 +50,7 @@ jobs:
         run: ./gradlew clean build
 
       - name: Codestyle
-        uses: musichin/ktlint-check@v4.0.2
+        uses: musichin/ktlint-check@v4.0.3
         with:
           ktlint-version: 1.2.1
 
