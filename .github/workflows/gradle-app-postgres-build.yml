@@ -103,7 +103,7 @@ jobs:
           SPRING_DATASOURCE_PASSWORD: ${{ secrets.postgres-build-db-svc-password }}
 
       - name: Codestyle
-        uses: musichin/ktlint-check@v4.0.2
+        uses: musichin/ktlint-check@v4.0.3
         with:
           ktlint-version: 1.2.1
 
