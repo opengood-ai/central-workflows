@@ -5,11 +5,13 @@ on:
     branches:
       - '**'
       - '!main'
-    paths-ignore:
-      - .github/workflows/*
-      - .gitignore
-      - LICENSE
-      - README.md
+    paths:
+      - '**'
+      - '!.github/workflows/*'
+      - '.github/workflows/release.yml'
+      - '!.gitignore'
+      - '!LICENSE'
+      - '!README.md'
 
 jobs:
   build:
