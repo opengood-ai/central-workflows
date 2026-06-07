@@ -41,7 +41,7 @@ jobs:
     if: ${{ contains(github.event.pull_request.labels.*.name, format('deploy {0}', inputs.env)) && github.event.pull_request.merged == true }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v6.0.2
+        uses: actions/checkout@v6.0.3
 
       - name: Download Release Artifact
         run: |
