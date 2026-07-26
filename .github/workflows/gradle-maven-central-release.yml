@@ -59,7 +59,7 @@ jobs:
     if: ${{ contains(github.event.pull_request.labels.*.name, 'release') && github.event.pull_request.merged == true }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v7.0.0
+        uses: actions/checkout@v7.0.1
         with:
           persist-credentials: false
           token: ${{ secrets.workflow-token }}
