@@ -24,7 +24,7 @@ jobs:
     steps:
       - name: Set Release Version and Tag
         id: set_release_and_tag
-        uses: callowayproject/bump-my-version@1.4.0
+        uses: callowayproject/bump-my-version@1.5.0
         env:
           BUMPVERSION_TAG: true
         with:
