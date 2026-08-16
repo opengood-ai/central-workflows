@@ -81,7 +81,7 @@ jobs:
           POSTGRES_DB_PASSWORD: ${{ secrets.postgres-build-db-svc-password }}
 
       - name: Database Migration
-        uses: burrunan/gradle-cache-action@v1
+        uses: burrunan/gradle-cache-action@v3.0.3
         with:
           arguments: flywayMigrate
           gradle-version: wrapper
