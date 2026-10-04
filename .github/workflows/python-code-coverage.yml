@@ -46,7 +46,7 @@ jobs:
           python -m pytest --cov-config=pyproject.toml
 
       - name: Coverage
-        uses: codecov/codecov-action@v7.0.0
+        uses: codecov/codecov-action@v7.1.1
         with:
           files: ./coverage.xml
           verbose: true
