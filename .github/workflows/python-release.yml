@@ -24,7 +24,7 @@ jobs:
     steps:
       - name: Set Release Version and Tag
         id: set_release_and_tag
-        uses: callowayproject/bump-my-version@1.7.0
+        uses: callowayproject/bump-my-version@1.8.1
         env:
           BUMPVERSION_TAG: true
         with:
@@ -49,7 +49,7 @@ jobs:
           branch: ${{ github.ref }}
 
       - name: Create GitHub Release
-        uses: softprops/action-gh-release@v3.0.3
+        uses: softprops/action-gh-release@v3.0.4
         with:
           tag_name: ${{ env.RELEASE_VERSION }}
           name: ${{ env.RELEASE_VERSION }}
